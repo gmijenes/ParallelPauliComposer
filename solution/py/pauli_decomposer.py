@@ -8,8 +8,9 @@ import warnings
 import numpy as np
 import itertools as it
 
-from utils import PAULI_LABELS
-from pauli_composer import PauliComposer, PauliDiagComposer
+from solution.py.base_solution.utils import PAULI_LABELS
+from solution.py.parallel_solution.pauli_composer import ParallelPauliComposer
+from solution.py.parallel_solution.pauli_composer_diag import ParallelDiagPauliComposer
 
 
 # Ignore ComplexWarning

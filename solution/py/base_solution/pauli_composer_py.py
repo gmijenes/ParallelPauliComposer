@@ -9,7 +9,7 @@ import numpy as np
 import scipy.sparse as ss
 from numbers import Number
 
-from utils import BINARY
+from  solution.py.base_solution.utils import BINARY
 
 
 # Ignore ComplexWarning

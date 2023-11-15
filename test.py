@@ -7,16 +7,17 @@ import ctypes
 import numpy as np
 from time import time
 from numpy.random import rand
-from qiskit.quantum_info import SparsePauliOp
+#from qiskit.quantum_info import SparsePauliOp
 #from pennylane import pauli_decompose
 import datetime
 
+from solution.py.base_solution.utils import PAULI_LABELS
+from solution.py.parallel_solution.pauli_composer import  ParallelPauliComposer
+from solution.py.parallel_solution.pauli_composer_diag import  ParallelDiagPauliComposer
 
-from utils import PAULI_LABELS
-from parellel_pauli_composer import  ParallelPauliComposer
+from solution.py.base_solution.pauli_composer_py import PauliComposer, PauliDiagComposer
+from solution.py.pauli_decomposer import PauliDecomposer
 
-from pauli_composer_py import PauliComposer, PauliDiagComposer
-#from pauli_decomposer import PauliDecomposer
 
 
 ##### PC/PDC #####
@@ -30,20 +31,18 @@ def pc_pdc_test(reps: int, n0=2, nf=31) -> None:
         # comp = ''.join([choice(['I', 'Z']) for _ in range(n)])  # PDC
         t = time()
         for _ in range(reps):
-            # m1 = PauliComposer(comp)
-            # print (m1)
-            m2 = ParallelPauliComposer(comp)
-            #print (m2)
-            # for i in range (0, m1.dim):
-            #     # print("Columna \n")
-            #     if (m1.col[i] != m2.col[i]):
-            #         print(f"ColError: En la posicion {i} parallelPauliComposer calculo  {m2.col[i] } pero deberia ser  {m1.col[i]}")
-            #     # print("Valor \n")
-            #     if (m1.mat[i] != m2.mat[i]):
-            #         print(f"RealError: En la posicion {i} parallelPauliComposer calculo  {m2.mat[i]}  pero deberia ser  {m1.mat[i]}")
+            m1 = PauliDiagComposer(comp)
+            m2 = ParallelDiagPauliComposer(comp)
+            for i in range (0, n):
+                # print("Columna \n")
+                # if (m1.col[i] != m2.col[i]):
+                #     print(f"ColError: En la posicion {i} parallelPauliComposer calculo  {m2.col[i] } pero deberia ser  {m1.col[i]}")
+                # # print("Valor \n")
+                if (m1.mat[i] != m2.mat[i]):
+                    print(f"RealError: En la posicion {i} parallelPauliComposer calculo  {m2.mat[i]}  pero deberia ser  {m1.mat[i]}")
         print('n=%i %.10f s' % (n, (time() - t)/reps))
 
-pc_pdc_test(5, 20, 31) 
+pc_pdc_test(3, 2, 28) 
 
 
 ##### DECOMPOSER #####
