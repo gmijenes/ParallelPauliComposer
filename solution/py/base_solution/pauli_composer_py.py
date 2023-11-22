@@ -75,7 +75,6 @@ class PauliComposer:
                 ent = np.full(self.dim, self.init_entry, dtype=np.complex64)
             else:
                 ent = np.full(self.dim, self.init_entry, dtype=np.int8)
-        print(entry)
         # Now that everything is prepared, compute the following elements
         for ind in range(n):
             p = 1<<int(ind)  # left-shift of bits ('1' (1) << 2 = '100' (4))

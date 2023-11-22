@@ -41,12 +41,12 @@ class ParallelDiagPauliComposer:
         self.lib_pauli_composer = ctypes.CDLL('solution/c/.so/pauli_composer_diag.so')
         
         col = (ctypes.c_int * self.dim)()
-        real = (ctypes.c_float * self.dim)()
+        real = (ctypes.c_char * self.dim)()
 
         entry_lwr = self.entry.lower().encode()
 
         result = self.lib_pauli_composer.pauli_composer(entry_lwr, 
-            ctypes.c_int(self.n), ctypes.c_float(1), real) 
+            ctypes.c_int(self.n), ctypes.c_char(('1').encode()), real) 
 
         
         self.__val__= real

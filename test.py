@@ -26,23 +26,21 @@ def pc_pdc_test(reps: int, n0=2, nf=31) -> None:
     Check times for the Pauli composer from n=n0 to n=nf repeating reps times
     '''
 
-    for n in range(n0, nf, 2):
-        comp = ''.join(np.random.choice(PAULI_LABELS, n))  # PC
-        # comp = ''.join([choice(['I', 'Z']) for _ in range(n)])  # PDC
+    for n in range(n0, nf, 1):
+        # comp = ''.join(np.random.choice(['I',  'X', 'Z'], n))  # PC
+        comp = ''.join(np.random.choice(['I',   'Z'], n))  # PDC
         t = time()
         for _ in range(reps):
-            m1 = PauliDiagComposer(comp)
             m2 = ParallelDiagPauliComposer(comp)
-            for i in range (0, n):
-                # print("Columna \n")
+            # m1 = PauliDiagComposer(comp)
+            # for i in range (0, m1.dim):
                 # if (m1.col[i] != m2.col[i]):
                 #     print(f"ColError: En la posicion {i} parallelPauliComposer calculo  {m2.col[i] } pero deberia ser  {m1.col[i]}")
-                # # print("Valor \n")
-                if (m1.mat[i] != m2.mat[i]):
-                    print(f"RealError: En la posicion {i} parallelPauliComposer calculo  {m2.mat[i]}  pero deberia ser  {m1.mat[i]}")
+                # if (m1.mat[i] != m2.mat[i]):
+                #     print(f"RealError: En la posicion {i} parallelPauliComposer calculo  {m2.mat[i]}  pero deberia ser  {m1.mat[i]}")
         print('n=%i %.10f s' % (n, (time() - t)/reps))
 
-pc_pdc_test(3, 2, 28) 
+pc_pdc_test(10, 1, 31) 
 
 
 ##### DECOMPOSER #####

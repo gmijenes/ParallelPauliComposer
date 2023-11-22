@@ -1,7 +1,7 @@
 #include "utils.h"
 #include <omp.h>
 
-void pauli_composer(char *entry_lwr, int n, float init_entry, float *values){
+void pauli_composer(char *entry_lwr, int n, char init_entry, char *values){
     
     char *rev_entry = malloc(n*sizeof(char));
     rev_entry = strcpy(rev_entry, entry_lwr);
@@ -33,11 +33,15 @@ void pauli_composer(char *entry_lwr, int n, float init_entry, float *values){
                 values[p + j] = values[0 + j]; 
             } 
             else{
-                values[p + j] = 0 - values[0 + j];
+                if (values[0 + j] == '1') {
+                    values[p + j] = '0';
+                } else {
+                    values[p + j] = '1';
+                }
             }
         }
         
-        if (id == 1){
+        if (id == 0){
             i++;
         }
         #pragma omp barrier

@@ -32,31 +32,29 @@ class ParallelPauliComposer:
         self.paulis = list(set(self.entry))
 
         mat_ent = {0: 1, 1: -1j, 2: -1, 3: 1j}
+        c_ent = {0: '1', 1: '0', 2: '0', 3: '1'}
 
         self.ny = self.entry.count('Y') & 3
         init_ent = mat_ent[self.ny]
-        
-        if weight is not None:
-            init_ent *= weight
+        c_init_ent = c_ent[self.ny]
 
         self.init_entry = init_ent
         self.iscomplex = np.iscomplex(init_ent)
 
-        self.lib_pauli_composer = ctypes.CDLL('solution/c/.so/pauli_composer.so')
+        self.lib_pauli_composer = ctypes.CDLL('solution/c/pauli_composer.so')
 
-        col = (ctypes.c_int * self.dim)()
-        real = (ctypes.c_float * self.dim)()
-        img = (ctypes.c_float * self.dim)()
+        col = (ctypes.c_uint * self.dim)()
+        real = (ctypes.c_char * self.dim)()
 
         entry_lwr = self.entry.lower().encode()
-
         result = self.lib_pauli_composer.pauli_composer(entry_lwr, 
-            ctypes.c_int(self.n), ctypes.c_bool(self.iscomplex), ctypes.c_float(init_ent.real),
-            ctypes.c_float(init_ent.imag), col, real, img) 
+            ctypes.c_int(self.n), ctypes.c_bool(self.iscomplex),
+            ctypes.c_char(c_init_ent.encode()), 
+            col, real) 
 
         self.col = col
         if (self.iscomplex):
-            self.__val__ = img
+            self.__val__ = real
             self.mat=ComplexNumber(self.__val__, weight)
         else:
             self.__val__= real
